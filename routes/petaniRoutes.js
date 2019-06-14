@@ -5,8 +5,6 @@ const petaniController = require('../controller/petaniController')
 
 module.exports = router => {
 
-    router.get('/', (req, res) => res.end('Api its work !'));
-
     //input data petani
     router.post('/petani', (req, res) => {
             const ktp                   = req.body.ktp;
@@ -99,7 +97,7 @@ module.exports = router => {
         }
     });
 
-    //delete data petani
+    //menampilkan data petani berdasarkan ktp
     router.get('/petani/:id', (req, res) => {
 
         if (!req.params.id || !req.params.id.trim() ) {

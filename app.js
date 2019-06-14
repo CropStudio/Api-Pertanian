@@ -18,6 +18,7 @@ app.options('*', cors())
 
 require('./routes/petaniRoutes')(router);
 app.use('/', router);
+router.get('/', (req, res) => res.end('Api its work !'));
 
 server.listen(port);
 server.on('listening', onListening)
