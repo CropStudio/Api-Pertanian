@@ -17,6 +17,10 @@ app.use(cors())
 app.options('*', cors())
 
 require('./routes/petaniRoutes')(router);
+require('./routes/userRoutes')(router);
+require('./routes/pupukRoutes')(router);
+require('./routes/supplierRoutes')(router)
+require('./routes/lahanRoutes')(router)
 app.use('/', router);
 router.get('/', (req, res) => res.end('Api its work !'));
 

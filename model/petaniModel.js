@@ -3,7 +3,7 @@ const petaniSchema = mongoose.Schema({
     ktp                     : {type: String, unique: true},
     nama 		            : String,
     tempat_lahir 	        : String,
-    tanggal_lahir	        : Date,
+    tanggal_lahir	        : String,
     jenis_kelamin	        : String,
     pendidikan              : String,
     status_keluarga	        : String,

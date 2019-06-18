@@ -52,14 +52,15 @@ exports.dataPetani = ()=>
     });
 
 
-exports.updatePetani = (ktp, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, pendidikan, status_keluarga, alamat, no_hp, namakelopoktani) =>
+exports.updatePetani = (id,ktp, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, pendidikan, status_keluarga, alamat, no_hp, namakelopoktani) =>
     new Promise((resolve,reject) => {
 
-        const ktps = ({
-            ktp:ktp
+        const ids = ({
+            _id : id
         });
 
         const dataPetani = ({
+            ktp:ktp,
             nama 		            : nama,
             tempat_lahir 	        : tempat_lahir,
             tanggal_lahir	        : tanggal_lahir,
@@ -72,7 +73,7 @@ exports.updatePetani = (ktp, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, p
             updated_at              : new Date()
         });
 
-        datapetani.update(ktps, dataPetani)
+        datapetani.update(ids, dataPetani)
             .then(() => resolve({
                 status: 200, message: 'Berhasil update data petani'
             }))
@@ -85,7 +86,7 @@ exports.deletePetani = (ktp) =>
     new Promise((resolve,reject) => {
 
         const ktps = ({
-            ktp:ktp
+            _id:ktp
         });
 
         datapetani.remove(ktps)
@@ -97,14 +98,14 @@ exports.deletePetani = (ktp) =>
             });
     });
 
-exports.dataPetaniKtp = (ktp) =>
+exports.dataPetaniKtp = (id) =>
     new Promise((resolve,reject) => {
 
-        const ktps = ({
-            ktp:ktp
+        const ids = ({
+            _id:id
         });
 
-        datapetani.findOne(ktps)
+        datapetani.findOne(ids)
             .then(ressults => {
                 if (ressults.length == 0) {
                     reject({status: 200, message: 'tidak ada data' });

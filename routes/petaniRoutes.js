@@ -50,6 +50,8 @@ module.exports = router => {
 
     //update data petani
     router.put('/petani/:id', (req, res) => {
+
+        const ktp 		            = req.body.ktp;
         const nama 		            = req.body.nama;
         const tempat_lahir 	        = req.body.tempat_lahir;
         const tanggal_lahir	        = req.body.tanggal_lahir;
@@ -68,7 +70,7 @@ module.exports = router => {
 
         } else {
 
-            petaniController.updatePetani(req.params.id,nama,tempat_lahir,tanggal_lahir,jenis_kelamin,pendidikan,status_keluarga,alamat,no_hp,nama_kelompok_petani)
+            petaniController.updatePetani(req.params.id,ktp,nama,tempat_lahir,tanggal_lahir,jenis_kelamin,pendidikan,status_keluarga,alamat,no_hp,nama_kelompok_petani)
 
                 .then(result => {
                     res.status(result.status).json({status:true,message: result.message})

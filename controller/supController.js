@@ -1,22 +1,19 @@
 'use strict'
 
-const datalahan = require('../model/lahanModel')
-const ktpCoi    = require('../model/petaniModel')
+const dataSupplier = require('../model/modelSuplier')
 
-exports.inputLahan = (ktp, alamat, kepemilikan, jenis, luas, peruntukan) =>
+exports.inputSupplier = (kodesup, namasup, penanggungjawab, alamat, notelp) =>
     new Promise((resolve,reject) => {
-
-        const dataLahan = new datalahan({
-            ktp                 : ktp,
-            alamat_lahan 		: alamat,
-            kepemilikan 	    : kepemilikan,
-            jenis_lahan	        : jenis,
-            luas_lahan	        : luas,
-            peruntukan          : peruntukan,
+        const dataSuppliers = new dataSupplier({
+            kodesup             : kodesup,
+            namasup             : namasup,
+            penanggung_jawab    : penanggungjawab,
+            alamat              : alamat,
+            notelp              : notelp,
             created_at          : new Date()
         });
 
-        dataLahan.save()
+        dataSuppliers.save()
 
             .then(() => resolve({ status: 200, message: 'Berhasil input data' }))
 
@@ -24,7 +21,7 @@ exports.inputLahan = (ktp, alamat, kepemilikan, jenis, luas, peruntukan) =>
 
                 if (err.code == 11000) {
 
-                    reject({ status: 200, message: 'ktp sudah digunakan' });
+                    reject({ status: 200, message: 'kode sudah digunakan' });
 
                 } else {
 
@@ -34,38 +31,36 @@ exports.inputLahan = (ktp, alamat, kepemilikan, jenis, luas, peruntukan) =>
     });
 
 
-exports.dataLahan = ()=>
+exports.dataSupplier = ()=>
     new Promise((resolve, reject)=>{
-        datalahan.find()
-            .then(ktps => {
-                if (ktps.length == 0) {
+        dataSupplier.find()
+            .then(kodes => {
+                if (kodes.length == 0) {
                     reject({status: 200, message: 'tidak ada data' });
                 } else {
-                    resolve({ status: 200, message: ktps});
+                    resolve({ status: 200, message: kodes});
                 }
             })
 
     });
 
-
-exports.updateLahan = (id,ktp, alamat, kepemilikan, jenis, luas, peruntukan) =>
+exports.updateSupplier = (_id, kodesup, namasup, penanggungjawab, alamat, notelp) =>
     new Promise((resolve,reject) => {
 
         const ids = ({
-            _id : id
+            _id : _id
         });
 
-        const dataLahan = ({
-            ktp                 : ktp,
-            alamat_lahan 		: alamat,
-            kepemilikan 	    : kepemilikan,
-            jenis_lahan	        : jenis,
-            luas_lahan	        : luas,
-            peruntukan          : peruntukan,
+        const dataSup = ({
+            kodesup             : kodesup,
+            namasup             : namasup,
+            penanggung_jawab    : penanggungjawab,
+            alamat              : alamat,
+            notelp              : notelp,
             updated_at          : new Date()
         });
 
-        datalahan.update(ids, dataLahan)
+        dataSupplier.update(ids, dataSup)
             .then(() => resolve({
                 status: 200, message: 'Berhasil update data'
             }))
@@ -74,14 +69,14 @@ exports.updateLahan = (id,ktp, alamat, kepemilikan, jenis, luas, peruntukan) =>
             });
     });
 
-exports.deleteLahan = (id) =>
+exports.deleteSupplier = (id) =>
     new Promise((resolve,reject) => {
 
-        const ktps = ({
+        const ids = ({
             _id:id
         });
 
-        datalahan.remove(ktps)
+        dataSupplier.remove(ids)
             .then(() => resolve({
                 status: 200, message: 'Berhasil menghapus data'
             }))
@@ -89,15 +84,16 @@ exports.deleteLahan = (id) =>
                 reject({ status: 200, message: 'Gagal' });
             });
     });
+//
 
-exports.dataLahanId = (id) =>
+exports.dataSupplierId = (id) =>
     new Promise((resolve,reject) => {
 
         const ids = ({
             _id:id
         });
 
-        datalahan.findOne(ids)
+        dataSupplier.findOne(ids)
             .then(ressults => {
                 if (ressults.length == 0) {
                     reject({status: 200, message: 'tidak ada data' });
@@ -107,18 +103,4 @@ exports.dataLahanId = (id) =>
             }).catch(err =>{
             reject({ status: 200, message: 'Data tidak ditemukan' });
         })
-    });
-
-exports.dataKtp = ()=>
-    new Promise((resolve, reject)=>{
-        ktpCoi.find({}, 'ktp')
-            .then(ktps => {
-                if (ktps.length == 0) {
-                    reject({status: 200, message: 'tidak ada data' });
-                } else {
-                    console.log(ktps);
-                    resolve({ status: 200, message: ktps});
-                }
-            })
-
     });
