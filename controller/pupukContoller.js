@@ -6,7 +6,7 @@ exports.inputPupuk = (kode, nama, jenisPupuk, harga, tipe) =>
     new Promise((resolve,reject) => {
         const dataPupuks = new datapupuk({
             kode          : kode,
-            nama_pupuk 	      : nama,
+            nama_pupuk 	  : nama,
             jenis_pupuk   : jenisPupuk,
             harga         : harga,
             tipe          : tipe,

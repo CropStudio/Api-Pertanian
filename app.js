@@ -25,7 +25,7 @@ app.use('/', router);
 router.get('/', (req, res) => res.end('Api its work !'));
 
 server.listen(port);
-server.on('listening', onListening)
+server.on('listening', onListening);
 async function onListening() {
     try {
         console.log('try to listen...')

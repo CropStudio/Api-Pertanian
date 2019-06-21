@@ -4,14 +4,14 @@ const user = require('../model/userModel');
 const bcrypt = require('bcryptjs');
 
 //Registrasi
-exports.registerUser = (firstname, lastname, username, email, notelp, tgllahir, alamat, level, password) =>
+exports.registerUser = (ktp, firstname, lastname, username, email, notelp, tgllahir, alamat, level, password) =>
     new Promise((resolve,reject) => {
 
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
 
         const newUser = new user({
-
+            ktp             : ktp,
             firstname       : firstname,
             lastname 	    : lastname,
             username 	    : username,
@@ -42,17 +42,17 @@ exports.registerUser = (firstname, lastname, username, email, notelp, tgllahir, 
     });
 
 //login
-exports.loginUser = (email, password) =>
+exports.loginUser = (username, password) =>
 
     new Promise((resolve,reject) => {
 
-        user.find({email: email})
+        user.find({username: username})
 
             .then(users => {
 
                 if (users.length == 0) {
 
-                    reject({status: 200, message: 'Periksa email anda' });
+                    reject({status: 200, message: 'Periksa username anda' });
 
                 } else {
 
@@ -60,7 +60,6 @@ exports.loginUser = (email, password) =>
 
                 }
             })
-
             .then(user => {
 
                 const hashed_password = user.password;
@@ -77,5 +76,18 @@ exports.loginUser = (email, password) =>
 
             .catch(err => reject({status: 200, message: 'Internal Server Error !' }));
 
+    });
+
+
+exports.dataPupuk = ()=>
+    new Promise((resolve, reject)=>{
+        user.find()
+            .then(users => {
+                if (users.length == 0) {
+                    reject({status: 200, message: 'tidak ada data' });
+                } else {
+                    resolve({ status: 200, message: users});
+                }
+            })
     });
 

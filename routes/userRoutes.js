@@ -5,42 +5,40 @@ const jwt = require('jsonwebtoken');
 
 const user = require('../controller/userController');
 const config = require('../config/config');
+const userModel = require('../model/userModel');
+const cekLogin      = require('../controller/cekUsersLogin')
 
 module.exports = router => {
 
-    router.get('/', (req, res) => res.end('Api its work !'));
-
-
     //login user
-    // router.post('/login', (req, res) => {
-    //     const credentials = auth(req);
-    //
-    //     if (!credentials) {
-    //
-    //         res.status(400).json({success : false,message: 'Invalid Request !'});
-    //
-    //     } else {
-    //         //
-    //         login.loginUser(credentials.name, credentials.pass)
-    //
-    //             .then(result => {
-    //                 const token = jwt.sign(result, config.secret, {expiresIn: 50000});
-    //                 user.update(
-    //                     { "email": result.message.email}, // Filter
-    //                     {"api_token": token}, // Update
-    //                     {upsert: true}) // add document with req.body._id if not exists
-    //                 res.status(result.status).json({success : true,message: result.message, token : token});
-    //
-    //             })
-    //
-    //             .catch(err => res.status(err.status).json({success: false, message: err.message}));
-    //     }
-    // });
+    router.post('/login', (req, res) => {
+        const credentials = auth(req);
+
+        if (!credentials) {
+
+            res.status(400).json({success : false,message: 'Invalid Request !'});
+
+        } else {
+            //
+            user.loginUser(credentials.name, credentials.pass)
+                .then(result => {
+                    const token = jwt.sign(result, config.secret, {expiresIn: 1440});
+                    userModel.update(
+                        {ktp        : result.message.ktp}, // Filter
+                        {api_token  : token}, // Update
+                        {upsert     : true}); // add document with req.body._id if not exists
+                    console.log(result.message.ktp);
+                    res.status(result.status).json({success : true,message: result.message, token : token});
+                })
+                .catch(err => res.status(err.status).json({success: false, message: err.message}));
+        }
+    });
 
 
     //register user
     router.post('/registrasi', (req, res) => {
 
+        var ktp             = req.body.ktp
         var firstname       = req.body.firstname
         var lastname 	    = req.body.lastname
         var username 	    = req.body.username
@@ -51,17 +49,19 @@ module.exports = router => {
         var level           = req.body.level
         var password	    = req.body.password
 
-        if (!firstname || !lastname || !email || !notelp || !tgllahir || !alamat || !level || !password || !firstname.trim() || !lastname.trim()
+        if (!ktp || !firstname || !lastname || !email || !notelp || !tgllahir || !alamat || !level || !password || !ktp || !firstname.trim() || !lastname.trim()
             || !username.trim() || !email.trim() || !notelp.trim() || !tgllahir.trim() || !alamat.trim() || !level.trim() || !password.trim()) {
             res.status(400).json({message: 'Gagal'});
         } else {
 
-            user.registerUser(firstname, lastname, username, email, notelp, tgllahir, alamat, level, password)
+            user.registerUser(ktp, firstname, lastname, username, email, notelp, tgllahir, alamat, level, password)
                 .then(result => {
                     res.status(result.status).json({success : true,message: result.message})
                 })
                 .catch(err => res.status(err.status).json({success : false,message: err.message}));
         }
     });
+
+
 
 }
